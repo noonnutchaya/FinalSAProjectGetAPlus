@@ -14,6 +14,7 @@ import LoginCustomerPage from './LoginCustomerPage';
 import ShowOrderListPage from './ShowOrderListPage';
 import OrderFormWithCheck from './OrderFormWithCheck';
 import TestCollectDataToEmail from './TestCollectDataToEmail';
+import CheckCustomerOrderPage from './CheckCustomerOrderPage';
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
           <Route path="/portalCustomer" component ={LoginCustomerPage}/>
           <Route path="/regisCustomer" component ={RegistrationForm}/>
           <Route path="/showOrder" component ={ShowOrderListPage}/>
+          <Route path="/CheckCustomerOrderPage" component={CheckCustomerOrderPage}/>
         </Switch>
        </Router>
 
