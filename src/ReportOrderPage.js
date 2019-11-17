@@ -4,6 +4,8 @@ import firebase from './firebase.js';
 import {Redirect, } from "react-router-dom";
 import './CSS/reportOrder.css';
 import TableCustomerList from './component/TableCustomerList';
+import { Modal, Button,Form,Input,Menu,message,Icon } from 'antd';
+
 const auth = firebase.auth();
 const firestore = firebase.firestore();
 

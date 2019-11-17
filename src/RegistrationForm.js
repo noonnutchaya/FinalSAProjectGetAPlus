@@ -1,20 +1,35 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import firebase from './firebase';
-
 import 'antd/dist/antd.css';
+import './CSS/setNumberInput.css';
 import './index.css';
 import {
   Form,
   Input,
   Button,
+  message,
 } from 'antd';
 
+var checkPassword = -1 ;
+var checkNameCustomer = -1 ;
+var checkPhone = -1 ;
+var checkEmail = -1 ;
 
-var checkSendOrder = -1 ;
-var auth = firebase.auth();
-var db = firebase.firestore();
+const success = () => {
+  message
+    .loading('กำลังบันทึกข้อมูลสมาชิก...', 2)
+    .then(() => message.success('ดำเนินการเสร็จสิ้น', 1.8))
+
+    // ถ้าจะเปลี่ยนหน้า
+    // .then(() => window.location.href = "/Home");
+
+};
+
+const fail = () => {
+  message.warning('กรุณากรอกข้อมูลให้ครบถ้วนและถูกต้อง',3);
+};
+
 
 class RegistrationForm extends React.Component {
   state = {
@@ -39,12 +54,13 @@ class RegistrationForm extends React.Component {
   compareToFirstPassword = (rule, value, callback) => {
     const { form } = this.props;
     if (value && value !== form.getFieldValue('password')) {
-        callback('Two passwords that you enter is inconsistent!');
-        checkSendOrder = 0 ;
+        callback('กรุณากรอกรหัสผ่านให้ตรงกันเพื่อการยืนยัน');
+        checkPassword = 0 ;
     } else {
-        checkSendOrder = 1 ;
+        checkPassword = 1 ;
         callback();
     }
+    console.log('checkPassword', checkPassword);
   };
 
   validateToNextPassword = (rule, value, callback) => {
@@ -58,65 +74,85 @@ class RegistrationForm extends React.Component {
   validateToName = (rule, value, callback) => {
     const { form } = this.props;
     if (form.getFieldValue('customerName').length < 5) {
-        checkSendOrder = 0 ;
+      checkNameCustomer = 0 ;
         callback(' ');
     }
     else {
-        checkSendOrder = 1 ;
+      checkNameCustomer = 1 ;
     }
     callback();
+    console.log('checkNameCustomer', checkNameCustomer);
   };
 
   validateToPhone = (rule, value, callback) => {
     const { form } = this.props;
     if (form.getFieldValue('phone').length < 9) {
-      checkSendOrder = 0 ;
-      callback('Please input 9 or 10 digits');
+      checkPhone = 0 ;
+      callback('กรุณากรอกหมายเลขโทรศัพท์ให้ครบถ้วน');
     }
     else if (form.getFieldValue('phone').length >= 11) {
-      checkSendOrder = 0 ;
-      callback('Please input 9 or 10 digits');
+      checkPhone = 0 ;
+      callback('กรุณาตรวจสอบหมายเลขโทรศัพท์');
     }
   else {
-    checkSendOrder = 1 ;
+    checkPhone = 1 ;
   }
-    console.log('check', checkSendOrder);
+    console.log('checkPhone', checkPhone);
     callback();
   };
 
-  addCustomer = e=> {
-    if (checkSendOrder == 1) {
-        console.log('up');
-        const { form } = this.props;    
-        let email = form.getFieldValue('email');
-        let password = form.getFieldValue('confirm');
-        firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
-                var errorCode = error.code;
-                var errorMessage = error.message;
-        });
+  validateToEmail = (rule, value, callback) => { 
+    const { form } = this.props;
+    if (form.getFieldValue('email').includes("@") == true && form.getFieldValue('email').includes(".") == true ) {
+      checkEmail = 1 ;
+      console.log('.....@@@@@');
+  
+      // callback('กรุณากรอกหมายเลขโทรศัพท์ให้ครบถ้วน');
+    }
+    else {
+      callback('กรุณากรอก E-mail ให้ถูกต้อง');
+      checkEmail = 0 ;
+    }    
+    console.log(checkEmail);
+    callback();
+  };
 
-        db.collection("Users").add({
-            name: form.getFieldValue('customerName'),
-            email: email,
-            phoneNumber: form.getFieldValue('phone')
-        })
-        .then(function(docRef) {
-            console.log("Document written with ID: ", docRef.id);
-        })
-        .catch(function(error) {
-            console.error("Error adding document: ", error);
-        });
+
+  addCustomer = e=> {
+    try {
+      if(checkPassword == 1 && checkNameCustomer == 1 && checkPhone == 1 && checkEmail == 1) {
+     // ใส่ฟังชั่นที่จะเก็บข้อมูล
+    console.log("add customer");
+    success();
+   }
+   else {
+    console.log("error");
+    fail();
+   }
     }
-    else if (checkSendOrder == 0 || checkSendOrder == -1) { 
-        console.log('XXXXXX');
+    catch {
+      fail();
     }
+   
+
 }
 
   render() {
     const { getFieldDecorator } = this.props.form;
 
+    const formItemLayout = {
+      labelCol: {
+        xs: { span: 24 },
+        sm: { span: 8 },
+      },
+      wrapperCol: {
+        xs: { span: 24 },
+        sm: { span: 8 },
+      },
+    };
+
     return (
-      <Form  onSubmit={this.handleSubmit}>
+      <Form {...formItemLayout} onSubmit={this.handleSubmit}>
 
         <Form.Item label="ชื่อ - นามสกุล">
           {getFieldDecorator('customerName', {
@@ -133,12 +169,10 @@ class RegistrationForm extends React.Component {
           {getFieldDecorator('email', {
             rules: [
               {
-                type: 'email',
-                message: 'The input is not valid E-mail!',
-              },
-              {
+                // type: 'email',
+                // message: 'กรุณากรอก E-mail ให้ถูกต้อง',
+                validator: this.validateToEmail,
                 required: true,
-                message: 'Please input your E-mail!',
               },
             ],
           })(<Input />)}
@@ -153,7 +187,7 @@ class RegistrationForm extends React.Component {
                     validator: this.validateToPhone,
                   },
                 ],
-              })(<Input type="number" />)}
+              })(<Input type="number" onKeyDown={ (evt) => (evt.key === 'e' || evt.key === '.' || evt.key === '-') && evt.preventDefault() } />)}
             </Form.Item> }
 
         <Form.Item label="Password" hasFeedback>

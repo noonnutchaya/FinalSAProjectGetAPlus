@@ -15,12 +15,15 @@ import ShowOrderListPage from './ShowOrderListPage';
 import OrderFormWithCheck from './OrderFormWithCheck';
 import TestCollectDataToEmail from './TestCollectDataToEmail';
 import CheckCustomerOrderPage from './CheckCustomerOrderPage';
+import FileUpload from './FileUpload';
+import LoginWithCheck from './LogInWithCheck';
+import TestUserProfile from './TestUserProfile';
 
 function App() {
   return (
       <Router>
         <Switch>
-          <Route exact path='/'   component = {TestCollectDataToEmail} />
+          <Route exact path='/'   component = {ShowWelcomePage} />
           <Route path='/home'     component = {HomePage} />
           <Route path='/order'    component = {OrderFormWithCheck} />
           <Route path='/confirm'  component = {ShowSeccessPage} />
@@ -28,10 +31,11 @@ function App() {
           <Route path='/check'  component = {DownloadFile} />
           <Route path='/vendor' component = {VendorPage} />
           <Route path="/reportOrderPage" component = {ReportOrderPage} />
-          <Route path="/portalCustomer" component ={LoginCustomerPage}/>
+          <Route path="/portalCustomer" component ={LoginWithCheck}/>
           <Route path="/regisCustomer" component ={RegistrationForm}/>
           <Route path="/showOrder" component ={ShowOrderListPage}/>
           <Route path="/CheckCustomerOrderPage" component={CheckCustomerOrderPage}/>
+          <Route path='/UserAccount'  component = {TestUserProfile} />
         </Switch>
        </Router>
 

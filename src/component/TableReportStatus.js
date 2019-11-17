@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import axios from 'axios';
 import '../CSS/table.css';
 import * as firebase from 'firebase';
 import { conditionalExpression } from '@babel/types';

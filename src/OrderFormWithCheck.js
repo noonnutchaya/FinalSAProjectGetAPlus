@@ -6,7 +6,7 @@ import './index.css';
 import './CSS/setNumberInput.css';
 import firebase from './firebase';
 
-// import LogInWithCheck from './LogInWithCheck';
+import LogInWithCheck from './LogInWithCheck';
 
 import {
   Form,
@@ -18,6 +18,7 @@ import {
   message,
   Modal,
   Checkbox,
+  Menu
 } from 'antd';
 
 const { TextArea } = Input;
@@ -34,6 +35,7 @@ var checkStateFile = -1 ;
 var documentId ;
 var customerName ;
 
+var checkAllExtra = -1 ;
 var chackExtraVatID = -1;
 var chackExtraCompanyName = -1;
 var chackExtraAddressCompany = -1;
@@ -71,7 +73,7 @@ const successExtraInput = () => {
     };
 
 const fail = () => {
-  message.warning('กรุณากรอกข้อมูลให้ครบและถูกต้อง',3);
+  message.warning('กรุณากรอกข้อมูลให้ครบถ้วนและถูกต้อง',3);
   };
 
 const failFile = () => {
@@ -94,7 +96,7 @@ function onPressEnter(value) {
 
 class OrderFormWithCheck extends React.Component {
 
-  state = { visible: false, };
+  state = { visible: false, checked: false, };
 
     constructor(props) {
         super(props)
@@ -183,7 +185,7 @@ class OrderFormWithCheck extends React.Component {
         const { form } = this.props;
         if (form.getFieldValue('copy').length < 1) {
           checkSendOrderCopy = 0 ;
-          callback('Please input integer');
+          callback('กรุณากรอกหมายเลข');
         }
         else {
           checkSendOrderCopy = 1 ;
@@ -210,16 +212,22 @@ class OrderFormWithCheck extends React.Component {
 
 
       addOrderInDB = e => {
-          if (checkSendOrderPhone == 1 && checkSendOrderDetail == 1 && checkSendOrderCopy == 1 && checkStateFile == 1) {
+
+          //  เอาใบเสร็จ
+          if (chackExtraVatID == 1 && chackExtraCompanyName == 1 && chackExtraAddressCompany == 1) { checkAllExtra = 1; }
+          //  ไม่เอาใบเสร็จ
+          if (chackExtraVatID == -1 && chackExtraCompanyName == -1 && chackExtraAddressCompany == -1 && stateCheckbox == false) { checkAllExtra = 1; }
+
+        if (checkSendOrderPhone == 1 && checkSendOrderDetail == 1 && checkSendOrderCopy == 1 && checkStateFile == 1 && checkAllExtra == 1) {
             // console.log(email);
             e.preventDefault();
             const { form } = this.props;
             console.log(form.getFieldValue('detail'));
-        db.collection('testInputFormWithCheck').add({
+            db.collection('testInputFormWithCheck').add({
             emailUser: this.state.emailUser,
             detailOrder:this.state.detailOrder,
             idDoc:this.state.idDoc,
-            // workLink:this.state.url,
+            workLink:this.state.url,
             Price:this.state.Price,
             phoneNum:this.state.phoneNum,
             stateWork:this.state.stateWork,
@@ -241,6 +249,7 @@ class OrderFormWithCheck extends React.Component {
         }) 
 
         .then(docRef => {
+          
             console.log("add success~") 
             console.log(docRef.id) 
             documentId = docRef.id
@@ -255,84 +264,160 @@ class OrderFormWithCheck extends React.Component {
             var vatIdFromUser = form.getFieldValue('vatID');
             var addressFromUser = form.getFieldValue('addressCompany');
 
-            db.collection('testInputFormWithCheck').doc(documentId).update({detailOrder: detailFromUser});
-            db.collection('testInputFormWithCheck').doc(documentId).update({idDoc: documentId});
-            db.collection('testInputFormWithCheck').doc(documentId).update({quotationNum: timeStampQuotation});
-            db.collection('testInputFormWithCheck').doc(documentId).update({phoneNum: phoneFromUser});
-            db.collection('testInputFormWithCheck').doc(documentId).update({copies: copiesFromUser});
-            db.collection('testInputFormWithCheck').doc(documentId).update({emailUser: customerName});
-
             // วดป. วันสั่งงาน
-            db.collection('testInputFormWithCheck').doc(documentId).update({orderDate: calDate});
-            db.collection('testInputFormWithCheck').doc(documentId).update({days: date});
-            db.collection('testInputFormWithCheck').doc(documentId).update({months: month});
-            db.collection('testInputFormWithCheck').doc(documentId).update({years: year});
+              db.collection('testInputFormWithCheck').doc(documentId).update({orderDate: calDate});
+              db.collection('testInputFormWithCheck').doc(documentId).update({days: date});
+              db.collection('testInputFormWithCheck').doc(documentId).update({months: month});
+              db.collection('testInputFormWithCheck').doc(documentId).update({years: year});
 
-            // ใบเสนอราคา
-            console.log(stateCheckbox);
-            db.collection('testInputFormWithCheck').doc(documentId).update({quotationPaper: stateCheckbox});
 
-            if (stateCheckbox == true) {
-              db.collection('testInputFormWithCheck').doc(documentId).update({company: companyFromUser});
-              db.collection('testInputFormWithCheck').doc(documentId).update({vatNum: vatIdFromUser});
-              db.collection('testInputFormWithCheck').doc(documentId).update({addreass: addressFromUser});
+              db.collection('testInputFormWithCheck').doc(documentId).update({detailOrder: detailFromUser});
+              db.collection('testInputFormWithCheck').doc(documentId).update({idDoc: documentId});
+              db.collection('testInputFormWithCheck').doc(documentId).update({quotationNum: timeStampQuotation});
+              db.collection('testInputFormWithCheck').doc(documentId).update({phoneNum: phoneFromUser});
+              db.collection('testInputFormWithCheck').doc(documentId).update({copies: copiesFromUser});
+              db.collection('testInputFormWithCheck').doc(documentId).update({emailUser: customerName});
+
+              if (stateCheckbox == true && checkAllExtra == 1) {
+                db.collection('testInputFormWithCheck').doc(documentId).update({company: companyFromUser});
+                db.collection('testInputFormWithCheck').doc(documentId).update({vatNum: vatIdFromUser});
+                db.collection('testInputFormWithCheck').doc(documentId).update({addreass: addressFromUser});
+              }
+
+          success(); 
+          console.log("add success~")    
+
+        })
+      }
+
+      else {
+        
+        // ไม่ต้องการใบเสร็จ
+        if (stateCheckbox == false) {
+          // ไม่กรอกรายละเอียดงานก่อนอัพโหลดไฟล์
+          if (checkSendOrderCopy == -1 || checkSendOrderDetail == -1 || checkSendOrderPhone == -1) {
+            // ไม่กรอกรายละเอียด ไม่อัพไฟล์
+            if (checkStateFile == -1) {
+              failFileAndInput();
             }
-            
-         
-            success();
-           
-        })  
-          }
-          // else if (checkSendOrder == 0 || checkSendOrder == -1 || checkStateFile == -1) {
-          //   if (checkStateFile == -1 && checkSendOrder != -1) {
-          //       failFile();
-          //   }
+            // ไม่กรอกรายละเอียด แต่ อัพไฟล์
+            else if (checkStateFile == 1) {
+              fail();
+            }
+          // failFile();
+        } 
 
-          //   else if (checkStateFile == -1 && checkSendOrder == -1) {
-          //     fail(); 
-          //   }            
-            
-          //   else {
-          //       fail(); 
-          //   }
-          // }
-
-          else {
-            // console.log(e.target.checked);
-            if ( stateCheckbox == false ) {
-              if (checkSendOrderCopy == 1 && checkSendOrderDetail == 1 && checkSendOrderPhone == 1 && checkStateFile == -1) {
+          // กรอกรายละเอียดงานไม่ถูกต้อง
+          else if (checkSendOrderCopy == 0 || checkSendOrderDetail == 0 || checkSendOrderPhone == 0) {
+            fail();
+          }else if (checkSendOrderCopy == 1 && checkSendOrderDetail == 1 && checkSendOrderPhone == 1) {
+            if (checkStateFile == -1) {
               failFile();
             }
-
-            else if (checkStateFile == -1) {
-              if (checkSendOrderCopy == 0 || checkSendOrderDetail == 0 || checkSendOrderPhone == 0) {
-                failFileAndInput();
-                }
-
-              else if (checkSendOrderCopy == -1 || checkSendOrderDetail == -1 || checkSendOrderPhone == -1) {
-                failFileAndInput();
-                }
-              }
-            
-            else if (checkStateFile == 1) {
-              if (checkSendOrderCopy == 0 || checkSendOrderDetail == 0 || checkSendOrderPhone == 0) {
-                fail();
-                }
-              }
-            }
-
-            if (stateCheckbox == true) {
-              if (chackExtraVatID == -1 || chackExtraCompanyName == -1 || chackExtraAddressCompany == -1) {
-                failExtraInput();
-              }
-              if (chackExtraVatID == 0 || chackExtraCompanyName == 0 || chackExtraAddressCompany == 0) {
-                failExtraInput();
-              }
-            }
-            
-            // fail();
           }
+        }
+
+        // ต้องการใบเสร็จ เช็คช่องใบเสร็จก่อน
+        else if (stateCheckbox == true) {
+          // ไม่กรอก
+          if (chackExtraVatID == -1 || chackExtraCompanyName == -1 || chackExtraAddressCompany == -1) {
+              failExtraInput();
+          }
+          // กรอกผิด
+          if (chackExtraVatID == 0 || chackExtraCompanyName == 0 || chackExtraAddressCompany == 0) {
+            failExtraInput();
+          }
+          // กรอกใบเสร็จครบ แต่รายละเอียดไม่ครบ
+          if (chackExtraVatID == 1 || chackExtraCompanyName == 1 || chackExtraAddressCompany == 1) {
+            if (checkSendOrderCopy == 0 || checkSendOrderDetail == 0 || checkSendOrderPhone == 0 ||
+                checkSendOrderCopy == -1 || checkSendOrderDetail == -1 || checkSendOrderPhone == -1) {
+                  if (checkStateFile == -1) {
+                    failFileAndInput();
+                  }
+                  // ไม่กรอกรายละเอียด แต่ อัพไฟล์
+                  else if (checkStateFile == 1) {
+                    fail();
+                  }
+            }
+          }
+
+        }
+
       }
+    };
+           
+
+        //   if (checkSendOrderPhone == 1 && checkSendOrderDetail == 1 && checkSendOrderCopy == 1 && checkStateFile == 1) {
+        
+
+      
+
+ 
+        //     // ใบเสนอราคา
+        //     console.log(stateCheckbox);
+        //     db.collection('testInputFormWithCheck').doc(documentId).update({quotationPaper: stateCheckbox});
+
+        //     if (stateCheckbox == true) {
+        //       db.collection('testInputFormWithCheck').doc(documentId).update({company: companyFromUser});
+        //       db.collection('testInputFormWithCheck').doc(documentId).update({vatNum: vatIdFromUser});
+        //       db.collection('testInputFormWithCheck').doc(documentId).update({addreass: addressFromUser});
+        //     }
+            
+         
+        //     success();
+           
+        // })  
+        //   }
+        //   // else if (checkSendOrder == 0 || checkSendOrder == -1 || checkStateFile == -1) {
+        //   //   if (checkStateFile == -1 && checkSendOrder != -1) {
+        //   //       failFile();
+        //   //   }
+
+        //   //   else if (checkStateFile == -1 && checkSendOrder == -1) {
+        //   //     fail(); 
+        //   //   }            
+            
+        //   //   else {
+        //   //       fail(); 
+        //   //   }
+        //   // }
+
+        //   else {
+        //     // console.log(e.target.checked);
+        //     if ( stateCheckbox == false ) {
+        //       if (checkSendOrderCopy == 1 && checkSendOrderDetail == 1 && checkSendOrderPhone == 1 && checkStateFile == -1) {
+        //       failFile();
+        //     }
+
+        //     else if (checkStateFile == -1) {
+        //       if (checkSendOrderCopy == 0 || checkSendOrderDetail == 0 || checkSendOrderPhone == 0) {
+        //         failFileAndInput();
+        //         }
+
+        //       else if (checkSendOrderCopy == -1 || checkSendOrderDetail == -1 || checkSendOrderPhone == -1) {
+        //         failFileAndInput();
+        //         }
+        //       }
+            
+        //     else if (checkStateFile == 1) {
+        //       if (checkSendOrderCopy == 0 || checkSendOrderDetail == 0 || checkSendOrderPhone == 0) {
+        //         fail();
+        //         }
+        //       }
+        //     }
+
+        //     if (stateCheckbox == true) {
+        //       if (chackExtraVatID == -1 || chackExtraCompanyName == -1 || chackExtraAddressCompany == -1) {
+        //         failExtraInput();
+        //       }
+        //       if (chackExtraVatID == 0 || chackExtraCompanyName == 0 || chackExtraAddressCompany == 0) {
+        //         failExtraInput();
+        //       }
+        //     }
+            
+        //     // fail();
+        //   }
+      // }
 
       showItem = () => {
         var wholeData = [];
@@ -354,6 +439,13 @@ class OrderFormWithCheck extends React.Component {
     stateCheckbox = e.target.checked ;
     console.log(e.target.checked);
     console.log(stateCheckbox)
+
+      console.log('checked = ', e.target.checked);
+      this.setState({
+        checked: e.target.checked,
+      });
+    
+
     if (e.target.checked == true) {
       this.setState({
         visible: true,
@@ -388,7 +480,7 @@ class OrderFormWithCheck extends React.Component {
       failExtraInput();
     }
 
-    console.log(`checked = ${e.target.checked}`);
+    stateCheckbox = true ;
 
   };
 
@@ -397,11 +489,14 @@ class OrderFormWithCheck extends React.Component {
     console.log(e);
     this.setState({
       visible: false,
-    });
+      checked: false,
 
-    chackExtraVatID = -1;
-    chackExtraCompanyName = -1;
-    chackExtraAddressCompany = -1;
+    });
+    stateCheckbox = false ;
+
+    // chackExtraVatID = -1;
+    // chackExtraCompanyName = -1;
+    // chackExtraAddressCompany = -1;
 
   };
 
@@ -422,7 +517,7 @@ class OrderFormWithCheck extends React.Component {
     const { form } = this.props;
     if (form.getFieldValue('companyName').length  < 3) {
       chackExtraCompanyName = 0 ;
-      callback(' ');
+      callback('กรุณากรอกอย่างน้อย 3 ตัวอักษร');
     } else {
       chackExtraCompanyName = 1 ;
       callback();
@@ -434,7 +529,7 @@ class OrderFormWithCheck extends React.Component {
     const { form } = this.props;
     if (form.getFieldValue('addressCompany').length  < 5) {
       chackExtraAddressCompany = 0 ;
-      callback(' ');
+      callback('กรุณากรอกอย่างน้อย 5 ตัวอักษร');
     } else {
       chackExtraAddressCompany = 1 ;
       callback();
@@ -442,6 +537,8 @@ class OrderFormWithCheck extends React.Component {
     console.log(chackExtraAddressCompany);
 
   };
+
+  
 
     
       render() {
@@ -463,7 +560,29 @@ class OrderFormWithCheck extends React.Component {
         return (
   
           <Form {...formItemLayout} onSubmit={this.handleSubmit}>
-            
+            <Menu mode="horizontal">
+            <Menu.Item >
+                <span><Icon type="shopping-cart"  /> </span>
+            </Menu.Item>
+
+            <Menu.Item >
+                <a href= "http://localhost:3000/Order"  rel="noopener noreferrer">
+                <span> <Icon type="file-add" /> <span> สั่งงาน </span> </span>
+                </a>
+            </Menu.Item>
+
+            <Menu.Item >
+                {/* <a href=""  rel="noopener noreferrer"> */}
+                <span> <Icon type="file-search" /> <span> ตรวจสอบงาน </span> </span>
+                {/* </a> */}
+            </Menu.Item>
+
+            <Menu.Item >
+                <a href="http://localhost:3000/UserAccount"  rel="noopener noreferrer">
+                <span> <Icon type="user" /> <span> บัญชีผู้ใช้ </span> </span>
+                </a>
+            </Menu.Item>
+            </Menu>
             {<Form.Item
               label={
                 <span>
@@ -507,7 +626,7 @@ class OrderFormWithCheck extends React.Component {
 
           <div>
 
-          <Checkbox onChange={this.showModal}> ต้องการใบเสร็จฉบับเต็ม </Checkbox> 
+          <Checkbox checked = {this.state.checked}  onChange={this.showModal}> ต้องการใบเสร็จฉบับเต็ม </Checkbox> 
             
             <Modal
               title=" ข้อมูลสำหรับออกใบเสร็จฉบับเต็ม"
@@ -539,7 +658,7 @@ class OrderFormWithCheck extends React.Component {
             >
               {getFieldDecorator('vatID', {
                 rules: [{ required: permissionExtraInput ,validator: this.validateToVatID,}],
-              })(<Input />)}
+              })(<Input type="number" onKeyDown={ (evt) => (evt.key === 'e' || evt.key === '.' || evt.key === '-') && evt.preventDefault() }/>)}
             </Form.Item>
     
             <Form.Item label="ที่อยู่สำหรับออกใบเสร็จฉบับเต็ม" >
