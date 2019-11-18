@@ -1,11 +1,8 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import '../CSS/table.css';
 import * as firebase from 'firebase';
-import { conditionalExpression } from '@babel/types';
-
 const db = firebase.firestore();
-const collection = db.collection("Users");
 
 class TableCustomerList extends Component {
 
@@ -44,7 +41,7 @@ class TableCustomerList extends Component {
         return this.state.data.map((user, index) => {
             const { name, email, phoneNumber } = user //destructuring
             return (
-                <tr>
+                <tr key={email}>
                     <td>{name}</td>
                     <td>{email}</td>
                     <td>{phoneNumber}</td>

@@ -1,10 +1,8 @@
-import React, { Component } from 'react';
-import TableReportStatus from './component/TableReportStatus';
+import React from 'react';
 import firebase from './firebase.js';
-import {Redirect, } from "react-router-dom";
 import './CSS/reportOrder.css';
 import TableCustomerList from './component/TableCustomerList';
-import { Modal, Button,Form,Input,Menu,message,Icon } from 'antd';
+import NavBarVendor from './component/NavBarVendor';
 
 const auth = firebase.auth();
 const firestore = firebase.firestore();
@@ -55,10 +53,13 @@ class ReportOrderPage extends React.Component {
 
   render() {
     return (
-      <div className="container">
-        <h1>Customer List Table</h1>
-        <TableCustomerList/>
-        <button onClick={() => this.logout()}>Logout</button>
+      <div>
+        <NavBarVendor/>
+        <div className="container">
+          <h1>Customer List Table</h1>
+          <TableCustomerList/>
+          <button onClick={() => this.logout()}>Logout</button>
+        </div>
       </div>
     );
   }

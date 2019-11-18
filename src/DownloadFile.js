@@ -12,14 +12,13 @@ class DownloadFile extends Component {
         this.setState({
             [e.target.name] : e.target.value
         }, )
-        const dataList = document.getElementById('fileList');
         db.collection(nameCollection).where('Phone','==',e.target.value).get().then(
             (querySnapshot) => {
                 const data = querySnapshot.docs.map(doc => doc.data());
                 console.log(data); 
                 data.forEach(
                     (item) => {
-                        if (item.stateWork != 'done') {
+                        if (item.stateWork !== 'done') {
                             var node = document.createElement("a");                
                             node.href = item.WorkLink; 
                             var textnode = document.createTextNode(item.Info + '\n');        

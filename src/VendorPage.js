@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-import LoginComponent from "./LoginComponent";
+import LoginComponent from "./component/LoginComponent";
 import './CSS/VendorPage.css';
 
 class VendorPage extends Component {

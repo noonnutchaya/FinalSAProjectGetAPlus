@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import LoginCustomerComponent from "./component/LoginCustomerComponent";
 import './CSS/VendorPage.css';
 
@@ -10,9 +9,7 @@ class LoginCustomerPage extends Component {
         <h1 className="title"> ยืนยันตัวตนลูกค้า </h1>
         <LoginCustomerComponent />
         <div className="regis-form">
-            <Link to = "/regisCustomer">     
-                <a>Register Account</a>
-            </Link>
+          <a href="http://localhost:3000/regisCustomer">Register Account</a>
         </div>
       </div>
     );

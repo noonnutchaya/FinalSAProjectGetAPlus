@@ -1,10 +1,7 @@
 import React, { Component } from 'react';
 import * as firebase from 'firebase';
 import '../CSS/table.css';
-import { object } from 'prop-types';
 const db = firebase.firestore();
-const collection = db.collection("CustomerDBtest");
-
 
 class CustomerDataTable extends Component {
     constructor() {
@@ -96,7 +93,7 @@ class CustomerDataTable extends Component {
 
     renderTableData() {
         return this.state.data.map((Customer, index) => {
-            const { Id, email, days , months,years, OrderNumber, Price, Status , Date } = Customer //destructuring
+            const { Id, email, days , months,years, OrderNumber, Price, Status} = Customer //destructuring
             return (
                 <tr key={Id}>
                     <td>{email}</td>

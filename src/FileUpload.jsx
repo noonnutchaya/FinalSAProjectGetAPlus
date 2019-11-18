@@ -4,19 +4,10 @@ import './CSS/setImg.css';
 import './CSS/fieldInput.css';
 
 import {
-    Form,
-    Select,
-    InputNumber,
-    Switch,
-    Radio,
-    Slider,
     Button,
     Upload,
     Icon,
     message,
-    Checkbox,
-    Row,
-    Col,
   } from 'antd';
 
   const fail = () => {
@@ -92,13 +83,6 @@ export class FileUpload extends Component {
     }
 
     render() {
-        const style = {
-            height: '100vh',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center'
-        };
         return (
             
             <div className="dropbox">

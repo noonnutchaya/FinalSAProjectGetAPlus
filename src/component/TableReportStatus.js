@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import '../CSS/table.css';
 import * as firebase from 'firebase';
-import { conditionalExpression } from '@babel/types';
 import TestCollectDataToEmail from '../TestCollectDataToEmail';
 const db = firebase.firestore();
 const dataCollectionName = "testInputFormWithCheck";
@@ -40,12 +39,6 @@ class TableReportStatus extends Component {
             });
             this.setState({ data: userDataList });
         })  
-   }
-
-   sortByDate = (data) => {
-       let sorted = [];
-
-       return null
    }
 
    clkUpdate = (word) =>{
@@ -104,9 +97,9 @@ class TableReportStatus extends Component {
                                 {stateWork}
                             </button>
                             <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <a className="dropdown-item" onClick={this.selectState( 1, Id)} dataToggle="modal" dataTarget="#quotationForm"> Doing </a>
-                                <a className="dropdown-item" onClick={this.selectState( 2, Id)}> Done </a>
-                                <a className="dropdown-item" onClick={this.selectState( 3, Id)}> Received </a>
+                                <a href="" className="dropdown-item" onClick={this.selectState( 1, Id)} dataToggle="modal" dataTarget="#quotationForm"> Doing </a>
+                                <a href="" className="dropdown-item" onClick={this.selectState( 2, Id)}> Done </a>
+                                <a href="" className="dropdown-item" onClick={this.selectState( 3, Id)}> Received </a>
                             </div>
                         </div>
                     </td>
@@ -116,7 +109,7 @@ class TableReportStatus extends Component {
     }
 
     renderTableData() {
-        if(this.state.data.length == 0){
+        if(this.state.data.length === 0){
             return (
                 <tbody>
                     {this.renderTableHeader()}

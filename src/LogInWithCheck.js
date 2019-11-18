@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import firebase from './firebase';
 import {
     Form,
@@ -8,10 +8,9 @@ import {
     message,
   } from 'antd';
 
-
-  function hasErrors(fieldsError) {
-    return Object.keys(fieldsError).some(field => fieldsError[field]);
-  }
+  // function hasErrors(fieldsError) {
+  //   return Object.keys(fieldsError).some(field => fieldsError[field]);
+  // }
 
  class LogInWithCheck extends React.Component {
     
@@ -23,7 +22,6 @@ import {
       getEmail = (email) => {
         console.log("this -> " , email)
     }
-
 
       login = (email, password) => {
         console.log(this.state)
@@ -68,7 +66,7 @@ import {
      
     
       render() {
-        const { getFieldDecorator, getFieldsError, getFieldError, isFieldTouched } = this.props.form;
+        const { getFieldDecorator, /*getFieldsError,*/ getFieldError, isFieldTouched } = this.props.form;
     
         const emailError = isFieldTouched('email') && getFieldError('email');
         const passwordError = isFieldTouched('password') && getFieldError('password');

@@ -1,6 +1,4 @@
-
 import React from 'react';
-import ReactDOM from 'react-dom';
 import 'antd/dist/antd.css';
 import './CSS/setNumberInput.css';
 import './index.css';
@@ -141,7 +139,7 @@ class TestCollectDataToEmail extends React.Component {
     
       validateTototalForEachOrder = (rule, value, callback) => {
         const { form } = this.props;
-        if (form.getFieldValue('totalForEachOrder') != totalForThisOrder) {
+        if (form.getFieldValue('totalForEachOrder') !== totalForThisOrder) {
           this.props.form.setFieldsValue({
             totalForEachOrder: totalForThisOrder,     }); 
             check_totalForEachOrder = 1
@@ -159,15 +157,16 @@ class TestCollectDataToEmail extends React.Component {
 
       validateToOrderNum = (rule, value, callback) => {
         const { form } = this.props;
-        if (form.getFieldValue('orderNum').length != 13) {
+        if (form.getFieldValue('orderNum').length !== 10) {
           check_orderNum = 0 ;
-          callback('กรุณากรอกหมายเลขคำสั่งซื้อให้ครบ 13 ตัว');
+          callback('กรุณากรอกหมายเลขคำสั่งซื้อให้ครบ 10 ตัว');
         }
         else {
+          console.log("here")
           check_orderNum = 1 ;  
         }
-        console.log('check_totalForEachOrder',check_totalForEachOrder);
-        callback(' ');
+        console.log('check_orderNum',check_orderNum);
+        callback();
       };
     
       renderTableData() {
@@ -190,7 +189,7 @@ class TestCollectDataToEmail extends React.Component {
                             + sentUnitName + ") ";
     
         
-        if (check_orderType == 1 && check_copy == 1 && check_unit == 1 && check_unitPrice == 1 && check_totalForEachOrder == 1 && check_orderNum == 1  ) {
+        if (check_orderType === 1 && check_copy === 1 && check_unit === 1 && check_unitPrice === 1 && check_totalForEachOrder === 1 && check_orderNum === 1  ) {
                        
         // Test
         console.log('check',sentPerOrder);
@@ -237,7 +236,6 @@ class TestCollectDataToEmail extends React.Component {
       calAllPrice = e => {
         e.preventDefault();
         showAllPrice = 0 ;
-        const { form } = this.props;
     
         for (var i = 0 ; i <= pricePerOrder.length-1 ; i++) {
           showAllPrice += pricePerOrder[i] ;
@@ -266,7 +264,7 @@ class TestCollectDataToEmail extends React.Component {
     
       render() {
         const { getFieldDecorator } = this.props.form;
-        const { visible, loading } = this.state;
+        const { visible } = this.state;
         return (
           <div>
             <Button type="default" onClick={this.showModal}>

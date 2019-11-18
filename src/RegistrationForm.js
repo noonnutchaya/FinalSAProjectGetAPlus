@@ -1,6 +1,4 @@
-
 import React from 'react';
-import ReactDOM from 'react-dom';
 import 'antd/dist/antd.css';
 import './CSS/setNumberInput.css';
 import './index.css';
@@ -103,7 +101,7 @@ class RegistrationForm extends React.Component {
 
   validateToEmail = (rule, value, callback) => { 
     const { form } = this.props;
-    if (form.getFieldValue('email').includes("@") == true && form.getFieldValue('email').includes(".") == true ) {
+    if (form.getFieldValue('email').includes("@") === true && form.getFieldValue('email').includes(".") === true ) {
       checkEmail = 1 ;
       console.log('.....@@@@@');
   
@@ -120,7 +118,7 @@ class RegistrationForm extends React.Component {
 
   addCustomer = e=> {
     try {
-      if(checkPassword == 1 && checkNameCustomer == 1 && checkPhone == 1 && checkEmail == 1) {
+      if(checkPassword === 1 && checkNameCustomer === 1 && checkPhone === 1 && checkEmail === 1) {
      // ใส่ฟังชั่นที่จะเก็บข้อมูล
     console.log("add customer");
     success();

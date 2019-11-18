@@ -1,12 +1,9 @@
 import React from 'react';
 import FileUpload from './FileUpload';
-import ReactDOM from 'react-dom';
 import 'antd/dist/antd.css';
 import './index.css';
 import './CSS/setNumberInput.css';
 import firebase from './firebase';
-
-import LogInWithCheck from './LogInWithCheck';
 
 import {
   Form,
@@ -22,8 +19,6 @@ import {
 } from 'antd';
 
 const { TextArea } = Input;
-
-var check ;
 
 const db = firebase.firestore();
 var checkSendOrderCopy = -1 ;
@@ -214,11 +209,11 @@ class OrderFormWithCheck extends React.Component {
       addOrderInDB = e => {
 
           //  เอาใบเสร็จ
-          if (chackExtraVatID == 1 && chackExtraCompanyName == 1 && chackExtraAddressCompany == 1) { checkAllExtra = 1; }
+          if (chackExtraVatID === 1 && chackExtraCompanyName === 1 && chackExtraAddressCompany === 1) { checkAllExtra = 1; }
           //  ไม่เอาใบเสร็จ
-          if (chackExtraVatID == -1 && chackExtraCompanyName == -1 && chackExtraAddressCompany == -1 && stateCheckbox == false) { checkAllExtra = 1; }
+          if (chackExtraVatID === -1 && chackExtraCompanyName === -1 && chackExtraAddressCompany === -1 && stateCheckbox === false) { checkAllExtra = 1; }
 
-        if (checkSendOrderPhone == 1 && checkSendOrderDetail == 1 && checkSendOrderCopy == 1 && checkStateFile == 1 && checkAllExtra == 1) {
+        if (checkSendOrderPhone === 1 && checkSendOrderDetail === 1 && checkSendOrderCopy === 1 && checkStateFile === 1 && checkAllExtra === 1) {
             // console.log(email);
             e.preventDefault();
             const { form } = this.props;
@@ -278,7 +273,7 @@ class OrderFormWithCheck extends React.Component {
               db.collection('testInputFormWithCheck').doc(documentId).update({copies: copiesFromUser});
               db.collection('testInputFormWithCheck').doc(documentId).update({emailUser: customerName});
 
-              if (stateCheckbox == true && checkAllExtra == 1) {
+              if (stateCheckbox === true && checkAllExtra === 1) {
                 db.collection('testInputFormWithCheck').doc(documentId).update({company: companyFromUser});
                 db.collection('testInputFormWithCheck').doc(documentId).update({vatNum: vatIdFromUser});
                 db.collection('testInputFormWithCheck').doc(documentId).update({addreass: addressFromUser});
@@ -293,49 +288,49 @@ class OrderFormWithCheck extends React.Component {
       else {
         
         // ไม่ต้องการใบเสร็จ
-        if (stateCheckbox == false) {
+        if (stateCheckbox === false) {
           // ไม่กรอกรายละเอียดงานก่อนอัพโหลดไฟล์
-          if (checkSendOrderCopy == -1 || checkSendOrderDetail == -1 || checkSendOrderPhone == -1) {
+          if (checkSendOrderCopy === -1 || checkSendOrderDetail === -1 || checkSendOrderPhone === -1) {
             // ไม่กรอกรายละเอียด ไม่อัพไฟล์
-            if (checkStateFile == -1) {
+            if (checkStateFile === -1) {
               failFileAndInput();
             }
             // ไม่กรอกรายละเอียด แต่ อัพไฟล์
-            else if (checkStateFile == 1) {
+            else if (checkStateFile === 1) {
               fail();
             }
           // failFile();
         } 
 
           // กรอกรายละเอียดงานไม่ถูกต้อง
-          else if (checkSendOrderCopy == 0 || checkSendOrderDetail == 0 || checkSendOrderPhone == 0) {
+          else if (checkSendOrderCopy === 0 || checkSendOrderDetail === 0 || checkSendOrderPhone === 0) {
             fail();
-          }else if (checkSendOrderCopy == 1 && checkSendOrderDetail == 1 && checkSendOrderPhone == 1) {
-            if (checkStateFile == -1) {
+          }else if (checkSendOrderCopy === 1 && checkSendOrderDetail === 1 && checkSendOrderPhone === 1) {
+            if (checkStateFile === -1) {
               failFile();
             }
           }
         }
 
         // ต้องการใบเสร็จ เช็คช่องใบเสร็จก่อน
-        else if (stateCheckbox == true) {
+        else if (stateCheckbox === true) {
           // ไม่กรอก
-          if (chackExtraVatID == -1 || chackExtraCompanyName == -1 || chackExtraAddressCompany == -1) {
+          if (chackExtraVatID === -1 || chackExtraCompanyName === -1 || chackExtraAddressCompany === -1) {
               failExtraInput();
           }
           // กรอกผิด
-          if (chackExtraVatID == 0 || chackExtraCompanyName == 0 || chackExtraAddressCompany == 0) {
+          if (chackExtraVatID === 0 || chackExtraCompanyName === 0 || chackExtraAddressCompany === 0) {
             failExtraInput();
           }
           // กรอกใบเสร็จครบ แต่รายละเอียดไม่ครบ
-          if (chackExtraVatID == 1 || chackExtraCompanyName == 1 || chackExtraAddressCompany == 1) {
-            if (checkSendOrderCopy == 0 || checkSendOrderDetail == 0 || checkSendOrderPhone == 0 ||
-                checkSendOrderCopy == -1 || checkSendOrderDetail == -1 || checkSendOrderPhone == -1) {
-                  if (checkStateFile == -1) {
+          if (chackExtraVatID === 1 || chackExtraCompanyName === 1 || chackExtraAddressCompany === 1) {
+            if (checkSendOrderCopy === 0 || checkSendOrderDetail === 0 || checkSendOrderPhone === 0 ||
+                checkSendOrderCopy === -1 || checkSendOrderDetail === -1 || checkSendOrderPhone === -1) {
+                  if (checkStateFile === -1) {
                     failFileAndInput();
                   }
                   // ไม่กรอกรายละเอียด แต่ อัพไฟล์
-                  else if (checkStateFile == 1) {
+                  else if (checkStateFile === 1) {
                     fail();
                   }
             }
@@ -446,7 +441,7 @@ class OrderFormWithCheck extends React.Component {
       });
     
 
-    if (e.target.checked == true) {
+    if (e.target.checked === true) {
       this.setState({
         visible: true,
       });
@@ -471,7 +466,7 @@ class OrderFormWithCheck extends React.Component {
   handleOk = e => {
     
     console.log(e);
-    if (chackExtraVatID == 1 && chackExtraCompanyName == 1 && chackExtraAddressCompany == 1 ) {
+    if (chackExtraVatID === 1 && chackExtraCompanyName === 1 && chackExtraAddressCompany === 1 ) {
       this.setState({ visible: false, });
       successExtraInput();
     }
@@ -502,7 +497,7 @@ class OrderFormWithCheck extends React.Component {
 
   validateToVatID = (rule, value, callback) => {
     const { form } = this.props;
-    if (form.getFieldValue('vatID').length  != 13) {
+    if (form.getFieldValue('vatID').length  !== 13) {
       callback('กรุณากรอกเลขประจำตัวผู้เสียภาษีให้ครบ 13 ตัว');
       chackExtraVatID = 0 ;
     } else {
@@ -572,9 +567,9 @@ class OrderFormWithCheck extends React.Component {
             </Menu.Item>
 
             <Menu.Item >
-                {/* <a href=""  rel="noopener noreferrer"> */}
+                <a href="http://localhost:3000/CheckCustomerOrderPage"  rel="noopener noreferrer">
                 <span> <Icon type="file-search" /> <span> ตรวจสอบงาน </span> </span>
-                {/* </a> */}
+                </a>
             </Menu.Item>
 
             <Menu.Item >
