@@ -2,12 +2,8 @@ import React from 'react';
 import 'antd/dist/antd.css';
 import './CSS/setNumberInput.css';
 import './index.css';
-import {
-  Form,
-  Input,
-  Button,
-  message,
-} from 'antd';
+import { Form,Input,Button,message,} from 'antd';
+import NavBarVendor from './component/NavBarVendor';
 
 var checkPassword = -1 ;
 var checkNameCustomer = -1 ;
@@ -150,77 +146,80 @@ class RegistrationForm extends React.Component {
     };
 
     return (
-      <Form {...formItemLayout} onSubmit={this.handleSubmit}>
+      <div>
+        <NavBarVendor/>
+        <Form {...formItemLayout} onSubmit={this.handleSubmit}>
 
-        <Form.Item label="ชื่อ - นามสกุล">
-          {getFieldDecorator('customerName', {
-            rules: [
-              {
-                required: true,
-                validator: this.validateToName,
-              },
-            ],
-          })(<Input />)}
-        </Form.Item>
+          <Form.Item label="ชื่อ - นามสกุล">
+            {getFieldDecorator('customerName', {
+              rules: [
+                {
+                  required: true,
+                  validator: this.validateToName,
+                },
+              ],
+            })(<Input />)}
+          </Form.Item>
 
-        <Form.Item label="E-mail">
-          {getFieldDecorator('email', {
-            rules: [
-              {
-                // type: 'email',
-                // message: 'กรุณากรอก E-mail ให้ถูกต้อง',
-                validator: this.validateToEmail,
-                required: true,
-              },
-            ],
-          })(<Input />)}
-        </Form.Item>
+          <Form.Item label="E-mail">
+            {getFieldDecorator('email', {
+              rules: [
+                {
+                  // type: 'email',
+                  // message: 'กรุณากรอก E-mail ให้ถูกต้อง',
+                  validator: this.validateToEmail,
+                  required: true,
+                },
+              ],
+            })(<Input />)}
+          </Form.Item>
 
-        { <Form.Item label="เบอร์โทรศัพท์" hasFeedback >
-              {getFieldDecorator('phone', {
-                rules: [
-                  
-                  {
-                    required: true,
-                    validator: this.validateToPhone,
-                  },
-                ],
-              })(<Input type="number" onKeyDown={ (evt) => (evt.key === 'e' || evt.key === '.' || evt.key === '-') && evt.preventDefault() } />)}
-            </Form.Item> }
+          { <Form.Item label="เบอร์โทรศัพท์" hasFeedback >
+                {getFieldDecorator('phone', {
+                  rules: [
+                    
+                    {
+                      required: true,
+                      validator: this.validateToPhone,
+                    },
+                  ],
+                })(<Input type="number" onKeyDown={ (evt) => (evt.key === 'e' || evt.key === '.' || evt.key === '-') && evt.preventDefault() } />)}
+              </Form.Item> }
 
-        <Form.Item label="Password" hasFeedback>
-          {getFieldDecorator('password', {
-            rules: [
-              {
-                required: true,
-                message: 'Please input your password!',
-              },
-              {
-                validator: this.validateToNextPassword,
-              },
-            ],
-          })(<Input.Password />)}
-        </Form.Item>
+          <Form.Item label="Password" hasFeedback>
+            {getFieldDecorator('password', {
+              rules: [
+                {
+                  required: true,
+                  message: 'Please input your password!',
+                },
+                {
+                  validator: this.validateToNextPassword,
+                },
+              ],
+            })(<Input.Password />)}
+          </Form.Item>
 
-        <Form.Item label="Confirm Password" hasFeedback>
-          {getFieldDecorator('confirm', {
-            rules: [
-              {
-                required: true,
-                message: 'Please confirm your password!',
-              },
-              {
-                validator: this.compareToFirstPassword,
-              },
-            ],
-          })(<Input.Password onBlur={this.handleConfirmBlur} />)}
-        </Form.Item>
-        
-        <Button type="primary" onClick={this.addCustomer} htmlType="submit">
-            Register
-          </Button>
-        
-      </Form>
+          <Form.Item label="Confirm Password" hasFeedback>
+            {getFieldDecorator('confirm', {
+              rules: [
+                {
+                  required: true,
+                  message: 'Please confirm your password!',
+                },
+                {
+                  validator: this.compareToFirstPassword,
+                },
+              ],
+            })(<Input.Password onBlur={this.handleConfirmBlur} />)}
+          </Form.Item>
+          
+          <Button type="primary" onClick={this.addCustomer} htmlType="submit">
+              Register
+            </Button>
+          
+        </Form>
+      </div>
     );
   }
 }

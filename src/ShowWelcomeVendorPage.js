@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import welcomePage from './images/welcomePageAdmin.png';
 import footWelcomePage from './images/footWelcomePage.png';
 import welcomeIcon from './images/welcomeIcon.png';

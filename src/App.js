@@ -8,7 +8,6 @@ import VendorPage from './VendorPage';
 import ReportOrderPage from './ReportOrderPage';
 import RegistrationForm from './RegistrationForm';
 import ShowOrderListPage from './ShowOrderListPage';
-import OrderFormWithCheck from './OrderFormWithCheck';
 import CheckCustomerOrderPage from './CheckCustomerOrderPage';
 import LoginWithCheck from './LogInWithCheck';
 import TestUserProfile from './TestUserProfile';
@@ -19,8 +18,7 @@ function App() {
   return (
       <Router>
         <Switch>
-          <Route exact path='/'   component = {ShowWelcomePage} />
-          <Route path='/order'    component = {OrderFormWithCheck} />
+          <Route exact path='/'   component = {ShowWelcomeVendorPage} />
           <Route path='/check'  component = {DownloadFile} />
           <Route path='/vendor' component = {VendorPage} />
           <Route path="/reportOrderPage" component = {ReportOrderPage} />
