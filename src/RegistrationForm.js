@@ -16,7 +16,7 @@ const success = () => {
     .then(() => message.success('ดำเนินการเสร็จสิ้น', 1.8))
 
     // ถ้าจะเปลี่ยนหน้า
-    // .then(() => window.location.href = "/Home");
+    .then(() => window.location.href = "/reportOrderPage");
 
 };
 

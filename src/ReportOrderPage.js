@@ -3,25 +3,23 @@ import firebase from './firebase.js';
 import './CSS/reportOrder.css';
 import TableCustomerList from './component/TableCustomerList';
 import NavBarVendor from './component/NavBarVendor';
+import { Link } from "react-router-dom";
 
 const auth = firebase.auth();
 const firestore = firebase.firestore();
 
 
 class ReportOrderPage extends React.Component {
-
+  
   constructor(){
     super()
 
     firebase.auth().onAuthStateChanged(user => {
-      if(!user) {
-        window.location = '/home'; 
-      }else{
+      // if(!user) {
+      //   window.location = '/vendor'; 
+      // }else{
         const email = auth.currentUser.email
         let emailVendor = []
-
-        
-
         firestore.collection("EmailVendor").onSnapshot(querySnapshot => {
           querySnapshot.forEach((doc) => {
               emailVendor.push(doc.data().email)
@@ -40,25 +38,32 @@ class ReportOrderPage extends React.Component {
         //   window.location = '/home'
         // }
       }
-    });
-  }
-
-  logout = () => {
-    firebase.auth().signOut().then(function() {
-        window.location = '/home'
-    }).catch(function(error) {
-        console.log(error)
-    });
+    // }
+    );
   }
 
   render() {
+    // firebase.auth().onAuthStateChanged(user =>{
+    //   if(!user){
+    //     return( <Link to="/reportOrderPage"/> );
+    //   }else{
+    //     return (
+    //       <div>
+    //         <NavBarVendor/>
+    //         <div className="container">
+    //           <h1>Customer List Table</h1>
+    //           <TableCustomerList/>
+    //         </div>
+    //       </div>
+    //     );
+    //   }
+    // });
     return (
       <div>
         <NavBarVendor/>
         <div className="container">
           <h1>Customer List Table</h1>
           <TableCustomerList/>
-          <button onClick={() => this.logout()}>Logout</button>
         </div>
       </div>
     );

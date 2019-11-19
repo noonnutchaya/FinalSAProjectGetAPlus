@@ -114,7 +114,7 @@ class NavBarVendor extends React.Component {
     logout = () => {
         firebase.auth().signOut().then(function() {
             success();
-            // window.location = '/home'
+            window.location = '/';
         }).catch(function(error) {
             console.log(error)
             error_();
