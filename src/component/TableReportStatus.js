@@ -34,7 +34,8 @@ class TableReportStatus extends Component {
                     vatNum: doc.data().vatNum ? doc.data().vatNum:"-",
                     years: doc.data().years,
                     stateWork: doc.data().stateWork,
-                    Id: doc.data().idDoc
+                    Id: doc.data().idDoc,
+                    workLink: doc.data().workLink
                 });
             });
             this.setState({ data: userDataList });
@@ -72,6 +73,7 @@ class TableReportStatus extends Component {
             <th> หมายเลขกำกับภาษี </th>
             <th> ราคารวม </th>
             <th> สถานะงาน </th>
+            <th> Download File </th>
         </tr>
     }
 
@@ -79,7 +81,7 @@ class TableReportStatus extends Component {
         return this.state.data.map((orderItem, index) => {
             const { orderDate, quotationNum, detailOrder
                 , copies, phoneNum, addreass
-            , company, vatNum, Price, stateWork, Id} = orderItem 
+            , company, vatNum, Price, stateWork, Id, workLink} = orderItem 
             return (
                 <tr>
                     <td>{orderDate}</td>
@@ -100,8 +102,12 @@ class TableReportStatus extends Component {
                                 <a href="" className="dropdown-item" onClick={this.selectState( 1, Id)} dataToggle="modal" dataTarget="#quotationForm"> Doing </a>
                                 <a href="" className="dropdown-item" onClick={this.selectState( 2, Id)}> Done </a>
                                 <a href="" className="dropdown-item" onClick={this.selectState( 3, Id)}> Received </a>
+                                <a href="" className="dropdown-item" onClick={this.selectState( 4, Id)}> abort </a>
                             </div>
                         </div>
+                    </td>
+                    <td>
+                        <a href={workLink} target="_blank" className="btn btn-secondary"> Download </a>
                     </td>
                 </tr>
             )
@@ -126,9 +132,6 @@ class TableReportStatus extends Component {
                 </tbody>
             );
         }
-
-
-        
     }
 
     selectState = (status, idOrder) => {
@@ -149,6 +152,13 @@ class TableReportStatus extends Component {
                         {stateWork: "Received"}
                     )
                     break;
+                case 4:
+                    collection.doc(idOrder).delete().then(function() {
+                        alert("Delete this order complete.");
+                    }).catch(function(error){
+                        console.log("Delete incomplete!");
+                    })
+                    break;
                 
                 default:
                     break;
@@ -167,12 +177,7 @@ class TableReportStatus extends Component {
                 <button className="btn btn-secondary" onClick={() =>this.clkUpdate("Doing")}>Doing</button>
                 <button className="btn btn-secondary" onClick={() =>this.clkUpdate("Done")}>Done</button>
                 <button className="btn btn-secondary" onClick={() =>this.clkUpdate("Received")}>Received</button>
-                <TestCollectDataToEmail title="ตีราคา1"/>
-                <TestCollectDataToEmail title="ตีราคา2"/>
-                <form action="http://localhost:4000/submit" method="POST">
-                    <input type="hidden" name="email" value={this.props.email}/>
-                    <button type="submit">send</button>
-                </form>
+                <TestCollectDataToEmail title="ตีราคา"/>
             </div>
       )
    }

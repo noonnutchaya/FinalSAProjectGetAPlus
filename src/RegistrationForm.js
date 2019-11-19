@@ -2,28 +2,13 @@ import React from 'react';
 import 'antd/dist/antd.css';
 import './CSS/setNumberInput.css';
 import './index.css';
-import { Form,Input,Button,message,} from 'antd';
+import { Form,Input,Button} from 'antd';
 import NavBarVendor from './component/NavBarVendor';
+import firebase from './firebase';
 
-var checkPassword = -1 ;
-var checkNameCustomer = -1 ;
-var checkPhone = -1 ;
-var checkEmail = -1 ;
-
-const success = () => {
-  message
-    .loading('กำลังบันทึกข้อมูลสมาชิก...', 2)
-    .then(() => message.success('ดำเนินการเสร็จสิ้น', 1.8))
-
-    // ถ้าจะเปลี่ยนหน้า
-    .then(() => window.location.href = "/reportOrderPage");
-
-};
-
-const fail = () => {
-  message.warning('กรุณากรอกข้อมูลให้ครบถ้วนและถูกต้อง',3);
-};
-
+var checkSendOrder = -1 ;
+var auth = firebase.auth();
+var db = firebase.firestore();
 
 class RegistrationForm extends React.Component {
   state = {
@@ -48,13 +33,12 @@ class RegistrationForm extends React.Component {
   compareToFirstPassword = (rule, value, callback) => {
     const { form } = this.props;
     if (value && value !== form.getFieldValue('password')) {
-        callback('กรุณากรอกรหัสผ่านให้ตรงกันเพื่อการยืนยัน');
-        checkPassword = 0 ;
+        callback('Two passwords that you enter is inconsistent!');
+        checkSendOrder = 0 ;
     } else {
-        checkPassword = 1 ;
+        checkSendOrder = 1 ;
         callback();
     }
-    console.log('checkPassword', checkPassword);
   };
 
   validateToNextPassword = (rule, value, callback) => {
@@ -68,67 +52,74 @@ class RegistrationForm extends React.Component {
   validateToName = (rule, value, callback) => {
     const { form } = this.props;
     if (form.getFieldValue('customerName').length < 5) {
-      checkNameCustomer = 0 ;
+        checkSendOrder = 0 ;
         callback(' ');
     }
     else {
-      checkNameCustomer = 1 ;
+        checkSendOrder = 1 ;
     }
     callback();
-    console.log('checkNameCustomer', checkNameCustomer);
   };
 
   validateToPhone = (rule, value, callback) => {
     const { form } = this.props;
     if (form.getFieldValue('phone').length < 9) {
-      checkPhone = 0 ;
-      callback('กรุณากรอกหมายเลขโทรศัพท์ให้ครบถ้วน');
+      checkSendOrder = 0 ;
+      callback('Please input 9 or 10 digits');
     }
     else if (form.getFieldValue('phone').length >= 11) {
-      checkPhone = 0 ;
-      callback('กรุณาตรวจสอบหมายเลขโทรศัพท์');
+      checkSendOrder = 0 ;
+      callback('Please input 9 or 10 digits');
     }
   else {
-    checkPhone = 1 ;
+    checkSendOrder = 1 ;
   }
-    console.log('checkPhone', checkPhone);
+    console.log('check', checkSendOrder);
     callback();
   };
-
-  validateToEmail = (rule, value, callback) => { 
-    const { form } = this.props;
-    if (form.getFieldValue('email').includes("@") === true && form.getFieldValue('email').includes(".") === true ) {
-      checkEmail = 1 ;
-      console.log('.....@@@@@');
-  
-      // callback('กรุณากรอกหมายเลขโทรศัพท์ให้ครบถ้วน');
-    }
-    else {
-      callback('กรุณากรอก E-mail ให้ถูกต้อง');
-      checkEmail = 0 ;
-    }    
-    console.log(checkEmail);
-    callback();
-  };
-
 
   addCustomer = e=> {
-    try {
-      if(checkPassword === 1 && checkNameCustomer === 1 && checkPhone === 1 && checkEmail === 1) {
-     // ใส่ฟังชั่นที่จะเก็บข้อมูล
-    console.log("add customer");
-    success();
-   }
-   else {
-    console.log("error");
-    fail();
-   }
-    }
-    catch {
-      fail();
-    }
-   
+    if (checkSendOrder == 1) {
+        console.log('up');
+        const { form } = this.props;    
+        let email = form.getFieldValue('email');
+        let password = form.getFieldValue('confirm');
+        firebase.auth().createUserWithEmailAndPassword(email, password)
+        .then(function(user){
+          db.collection("Users").add({
+            name: form.getFieldValue('customerName'),
+            email: email,
+            phoneNumber: form.getFieldValue('phone')
+          })
+          .then(function(docRef) {
+              console.log("Document written with ID: ", docRef.id);
+              alert('การสมัครสมาชิกเสร็จสิ้น');
+              window.location = '/reportOrderPage';
+          })
+          .catch(function(error) {
+              console.error("Error adding document: ", error);
+              alert('การสมัครสมาชิกไม่สำเร็จ กรุณาติดต่อแอดมิน');
+          });
+        })
+        .catch(function(error) {
+                const { form } = this.props;
+                var errorCode = error.code;
+                var errorMessage = error.message;
+                console.log(errorCode+":"+errorMessage);
+                alert('การสมัครสมาชิกไม่สำเร็จ กรุณาติดต่อแอดมิน');
 
+                this.props.form.setFieldsValue({
+                  customerName: "", 
+                  email: "",  
+                  phone: "",
+                  password: "",
+                  confirm:""
+                }); 
+        });
+    }
+    else if (checkSendOrder == 0 || checkSendOrder == -1) { 
+        console.log('XXXXXX');
+    }
 }
 
   render() {

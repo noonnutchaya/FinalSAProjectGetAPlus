@@ -62,7 +62,8 @@ class ReportOrderPage extends React.Component {
       <div>
         <NavBarVendor/>
         <div className="container">
-          <h1>Customer List Table</h1>
+          <h1> รายชื่อลูกค้า </h1>
+          <p> คำแนะนำ : ปุ่ม "show" ด้านหลังแถวสามารถแสดงตารางการสั่งงานต่างๆของลูค้ารายนั้นได้ และสามารถใช้ตารางนี้ในการปรับแก้สถานะงาน </p>
           <TableCustomerList/>
         </div>
       </div>
