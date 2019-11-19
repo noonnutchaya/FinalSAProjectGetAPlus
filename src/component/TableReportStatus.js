@@ -3,7 +3,7 @@ import '../CSS/table.css';
 import * as firebase from 'firebase';
 import TestCollectDataToEmail from '../TestCollectDataToEmail';
 const db = firebase.firestore();
-const dataCollectionName = "testInputFormWithCheck";
+const dataCollectionName = "Orders";
 const collection = db.collection(dataCollectionName);
 
 class TableReportStatus extends Component {
@@ -74,6 +74,7 @@ class TableReportStatus extends Component {
             <th> ราคารวม </th>
             <th> สถานะงาน </th>
             <th> Download File </th>
+            <th> ส่งใบเสนอราคา </th>
         </tr>
     }
 
@@ -99,15 +100,18 @@ class TableReportStatus extends Component {
                                 {stateWork}
                             </button>
                             <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <a href="" className="dropdown-item" onClick={this.selectState( 1, Id)} dataToggle="modal" dataTarget="#quotationForm"> Doing </a>
-                                <a href="" className="dropdown-item" onClick={this.selectState( 2, Id)}> Done </a>
-                                <a href="" className="dropdown-item" onClick={this.selectState( 3, Id)}> Received </a>
-                                <a href="" className="dropdown-item" onClick={this.selectState( 4, Id)}> abort </a>
+                                <a className="dropdown-item" onClick={this.selectState( 1, Id)} dataToggle="modal" dataTarget="#quotationForm"> Doing </a>
+                                <a className="dropdown-item" onClick={this.selectState( 2, Id)}> Done </a>
+                                <a className="dropdown-item" onClick={this.selectState( 3, Id)}> Received </a>
+                                <a className="dropdown-item" onClick={this.selectState( 4, Id)}> abort </a>
                             </div>
                         </div>
                     </td>
                     <td>
                         <a href={workLink} target="_blank" className="btn btn-secondary"> Download </a>
+                    </td>
+                    <td>
+                        <TestCollectDataToEmail email={this.props.email} idDoc={Id}/>
                     </td>
                 </tr>
             )
@@ -120,7 +124,7 @@ class TableReportStatus extends Component {
                 <tbody>
                     {this.renderTableHeader()}
                     <tr> 
-                        <td colSpan="10">--No Data--</td>
+                        <td colSpan="12">--No Data--</td>
                     </tr>
                 </tbody>
             );
@@ -177,7 +181,6 @@ class TableReportStatus extends Component {
                 <button className="btn btn-secondary" onClick={() =>this.clkUpdate("Doing")}>Doing</button>
                 <button className="btn btn-secondary" onClick={() =>this.clkUpdate("Done")}>Done</button>
                 <button className="btn btn-secondary" onClick={() =>this.clkUpdate("Received")}>Received</button>
-                <TestCollectDataToEmail title="ตีราคา"/>
             </div>
       )
    }

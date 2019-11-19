@@ -1,8 +1,14 @@
+
 import React from 'react';
+import ReactDOM from 'react-dom';
 import 'antd/dist/antd.css';
 import './CSS/setNumberInput.css';
 import './index.css';
 import { Modal, Button,Form,Input,InputNumber,message } from 'antd';
+import Axios from 'axios';
+import firebase from './firebase';
+
+var db = firebase.firestore();
 
 var pricePerOrder = [];
 var showOrder = [];
@@ -139,7 +145,7 @@ class TestCollectDataToEmail extends React.Component {
     
       validateTototalForEachOrder = (rule, value, callback) => {
         const { form } = this.props;
-        if (form.getFieldValue('totalForEachOrder') !== totalForThisOrder) {
+        if (form.getFieldValue('totalForEachOrder') != totalForThisOrder) {
           this.props.form.setFieldsValue({
             totalForEachOrder: totalForThisOrder,     }); 
             check_totalForEachOrder = 1
@@ -152,20 +158,19 @@ class TestCollectDataToEmail extends React.Component {
           check_totalForEachOrder = 1 ;  
         }
         console.log('check_totalForEachOrder',check_totalForEachOrder);
-        callback(' ');
+        callback();
       };
 
       validateToOrderNum = (rule, value, callback) => {
         const { form } = this.props;
-        if (form.getFieldValue('orderNum').length !== 10) {
+        if (form.getFieldValue('orderNum').length != 10) {
           check_orderNum = 0 ;
           callback('กรุณากรอกหมายเลขคำสั่งซื้อให้ครบ 10 ตัว');
         }
         else {
-          console.log("here")
           check_orderNum = 1 ;  
         }
-        console.log('check_orderNum',check_orderNum);
+        console.log('check_totalForEachOrder',check_totalForEachOrder);
         callback();
       };
     
@@ -186,10 +191,10 @@ class TestCollectDataToEmail extends React.Component {
         var sentPricePerUnit = form.getFieldValue('unitPrice');
         var sentPerOrder = "รายการ: " + sentOrder + " จำนวน: " + sentCopyNum
                             + " " + sentUnitName + " (ราคา " + sentPricePerUnit + " บาทต่อ"
-                            + sentUnitName + ") ";
-    
-        
-        if (check_orderType === 1 && check_copy === 1 && check_unit === 1 && check_unitPrice === 1 && check_totalForEachOrder === 1 && check_orderNum === 1  ) {
+                            + sentUnitName + ") \n";
+
+        if (check_orderType == 1 && check_copy == 1 && check_unit == 1 &&
+           check_unitPrice == 1 && check_orderNum == 1  ) {
                        
         // Test
         console.log('check',sentPerOrder);
@@ -236,6 +241,7 @@ class TestCollectDataToEmail extends React.Component {
       calAllPrice = e => {
         e.preventDefault();
         showAllPrice = 0 ;
+        const { form } = this.props;
     
         for (var i = 0 ; i <= pricePerOrder.length-1 ; i++) {
           showAllPrice += pricePerOrder[i] ;
@@ -255,21 +261,39 @@ class TestCollectDataToEmail extends React.Component {
           showOrderList:[]
         })
 
-        
         console.log('showAllPrice',showAllPrice);
-      
-    
-      };
+        this.sendEmail(this.state.showOrderList, showAllPrice);
+        db.collection("Orders").doc(this.props.idDoc).update({
+          Price: showAllPrice
+        })
+        .then(function(docRef) {
+            console.log("update price complete");
+        })
+        .catch(function(error) {
+            console.error("Error update price");
+        });
+      }
+
+      sendEmail = (list,price) =>{
+        console.log("Email receiver : "+this.props.email);
+        var email = this.props.email;
+        Axios.post('http://localhost:4000/submit', null, { params: {
+          email,
+          list,
+          price
+        }}).then(res =>{
+          console.log(res);
+        })
+      }
     
     
       render() {
         const { getFieldDecorator } = this.props.form;
-        const { visible } = this.state;
+        const { visible, loading } = this.state;
         return (
           <div>
-            <Button type="default" onClick={this.showModal}>
-              {this.props.title}
-            </Button>
+            <button className="btn btn-secondary" onClick={this.showModal}> ส่งใบเสนอราคา </button>
+
             <Modal
               visible={visible}
               title={this.props.title}
