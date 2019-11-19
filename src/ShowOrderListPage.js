@@ -13,7 +13,6 @@ class ShowOrderListPage extends Component {
         <NavBarVendor/>
         <div className="layout">
           <h1 className="title"> แสดงรายการสั่งงาน </h1>
-          <h1>{data}</h1>
           <TableReportStatus email={data}/>
         </div>
       </div>

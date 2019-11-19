@@ -4,6 +4,7 @@ import './CSS/reportOrder.css';
 import TableCustomerList from './component/TableCustomerList';
 import NavBarVendor from './component/NavBarVendor';
 import { Link } from "react-router-dom";
+import './CSS/VendorPage.css';
 
 const auth = firebase.auth();
 const firestore = firebase.firestore();
@@ -61,8 +62,8 @@ class ReportOrderPage extends React.Component {
     return (
       <div>
         <NavBarVendor/>
-        <div className="container">
-          <h1> รายชื่อลูกค้า </h1>
+        <div className="layout">
+          <h1 className="title"> รายชื่อลูกค้า </h1>
           <p> คำแนะนำ : ปุ่ม "show" ด้านหลังแถวสามารถแสดงตารางการสั่งงานต่างๆของลูค้ารายนั้นได้ และสามารถใช้ตารางนี้ในการปรับแก้สถานะงาน </p>
           <TableCustomerList/>
         </div>

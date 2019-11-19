@@ -4,6 +4,7 @@ import 'antd/dist/antd.css';
 import './CSS/setNumberInput.css';
 import firebase from './firebase';
 import NavBarVendor from './component/NavBarVendor';
+import './CSS/VendorPage.css';
 
 import './index.css';
 import {
@@ -203,6 +204,8 @@ validateToNextPassword = (rule, value, callback) => {
     return (
       <div>
         <NavBarVendor/>
+      <div className="layout">
+        <h1 className="title"> ลงทะเบียนลูกค้า </h1>
       <Form {...formItemLayout} onSubmit={this.handleSubmit}>
 
         <Form.Item label="ชื่อ - นามสกุล">
@@ -273,6 +276,7 @@ validateToNextPassword = (rule, value, callback) => {
           </Button>
         
       </Form>
+      </div>
       </div>
     );
   }

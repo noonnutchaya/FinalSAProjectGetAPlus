@@ -43,17 +43,30 @@ class TableReportStatus extends Component {
    }
 
    clkUpdate = (word) =>{
-        db.collection(dataCollectionName).where("stateWork", "==", word)
+        let userDataList = [];
+        db.collection(dataCollectionName)
+            .where("emailUser", "==", this.props.email)
+            .where("stateWork", "==", word)
         .onSnapshot((querySnapshot) => {
-        const userDataList = [];
-        querySnapshot.forEach((doc) => {
+            querySnapshot.forEach((doc) => {
             const userData = {
-                Name: doc.data().Name,
-                Info: doc.data().Info,
-                Phone: doc.data().Phone,
                 Price: doc.data().Price,
-                StateWork: doc.data().stateWork,
-                Id: doc.data().idDoc
+                addreass: doc.data().addreass ? doc.data().addreass:"-",
+                company: doc.data().company ? doc.data().company:"-",
+                copies: doc.data().copies,
+                days: doc.data().days,
+                detailOrder: doc.data().detailOrder,
+                emailUser: doc.data().emailUser,
+                months: doc.data().months,
+                orderDate: doc.data().orderDate,
+                phoneNum: doc.data().phoneNum,
+                quotationNum: doc.data().quotationNum,
+                quotationPaper: doc.data().quotationPaper,
+                vatNum: doc.data().vatNum ? doc.data().vatNum:"-",
+                years: doc.data().years,
+                stateWork: doc.data().stateWork,
+                Id: doc.data().idDoc,
+                workLink: doc.data().workLink
             }
             userDataList.push(userData);
         });
@@ -170,17 +183,19 @@ class TableReportStatus extends Component {
         }
     }
     
-
    render() { 
       return (
             <div>
                 <table id='students'>
                     {this.renderTableData()}
                 </table>
-                <button className="btn btn-secondary" onClick={() => this.clkUpdate("Order")}>Order</button>
-                <button className="btn btn-secondary" onClick={() =>this.clkUpdate("Doing")}>Doing</button>
-                <button className="btn btn-secondary" onClick={() =>this.clkUpdate("Done")}>Done</button>
-                <button className="btn btn-secondary" onClick={() =>this.clkUpdate("Received")}>Received</button>
+                <div className="block-container">
+                    <h5> Filter </h5>
+                    <button className="btn btn-secondary grap" onClick={() => this.clkUpdate("Order")}>Order</button>
+                    <button className="btn btn-secondary grap" onClick={() =>this.clkUpdate("Doing")}>Doing</button>
+                    <button className="btn btn-secondary grap" onClick={() =>this.clkUpdate("Done")}>Done</button>
+                    <button className="btn btn-secondary grap" onClick={() =>this.clkUpdate("Received")}>Received</button>
+                </div>
             </div>
       )
    }

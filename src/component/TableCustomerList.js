@@ -52,7 +52,7 @@ class TableCustomerList extends Component {
                                 data: email // your data array of objects
                             }}
                         >
-                            <button>Show</button>
+                            <button className="btn btn-secondary">Show</button>
                         </Link>
                     </td>
                 </tr>
