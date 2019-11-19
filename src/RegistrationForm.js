@@ -2,13 +2,26 @@ import React from 'react';
 import 'antd/dist/antd.css';
 import './CSS/setNumberInput.css';
 import './index.css';
-import { Form,Input,Button} from 'antd';
+// import { Form,Input,Button} from 'antd';
 import NavBarVendor from './component/NavBarVendor';
 import firebase from './firebase';
+
+import ReactDOM from 'react-dom';
+
+import {
+  Form,
+  Input,
+  Button,
+  message,
+} from 'antd';
 
 var checkSendOrder = -1 ;
 var auth = firebase.auth();
 var db = firebase.firestore();
+
+const fail = () => {
+  message.warning('การสมัครสมาชิกไม่สำเร็จ กรุณาติดต่อแอดมิน',3);
+};
 
 class RegistrationForm extends React.Component {
   state = {
@@ -102,25 +115,36 @@ class RegistrationForm extends React.Component {
           });
         })
         .catch(function(error) {
-                const { form } = this.props;
                 var errorCode = error.code;
                 var errorMessage = error.message;
                 console.log(errorCode+":"+errorMessage);
-                alert('การสมัครสมาชิกไม่สำเร็จ กรุณาติดต่อแอดมิน');
-
-                this.props.form.setFieldsValue({
-                  customerName: "", 
-                  email: "",  
-                  phone: "",
-                  password: "",
-                  confirm:""
-                }); 
+                // this.test();
+                // this.props.form.setFieldsValue({
+                //   customerName: "", 
+                //   email: "",  
+                //   phone: "",
+                //   password: "",
+                //   confirm:""
+                // }); 
+                // alert('การสมัครสมาชิกไม่สำเร็จ กรุณาติดต่อแอดมิน');
+                fail();
+                window.location = '/regisCustomer';
         });
     }
     else if (checkSendOrder == 0 || checkSendOrder == -1) { 
         console.log('XXXXXX');
     }
 }
+
+  test = () =>{
+    this.props.form.setFieldsValue({
+      customerName: "", 
+      email: "",  
+      phone: "",
+      password: "",
+      confirm:""
+    }); 
+  }
 
   render() {
     const { getFieldDecorator } = this.props.form;
@@ -208,6 +232,7 @@ class RegistrationForm extends React.Component {
           <Button type="primary" onClick={this.addCustomer} htmlType="submit">
               Register
             </Button>
+            <button onClick={() => this.test()}>dfghjkl;</button>
           
         </Form>
       </div>
