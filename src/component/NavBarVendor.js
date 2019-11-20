@@ -150,11 +150,11 @@ class NavBarVendor extends React.Component {
                             title={
                             <span className="submenu-title-wrapper">
                             <Icon type="setting" />   </span>} >
-
+{/* 
                         <Menu.Item 
                             key="1"     onClick={(e)=>this.setState({current: e.key})}>
                             <span> <Icon type="key" />แก้ไขรหัสผ่าน  </span>
-                        </Menu.Item>
+                        </Menu.Item> */}
 
                         <Menu.Item 
                             key="2"     onClick={this.logout}>      <span> <Icon type="logout" />ลงชื่อออก</span>

@@ -115,7 +115,7 @@ validateToNextPassword = (rule, value, callback) => {
     }
     else if (form.getFieldValue('phone').length >= 11) {
       checkPhone = 0 ;
-      callback('กรุณาตรวจสอบหมายเลขโทรศัพท์');
+      callback('กรุณากรอกหมายเลขโทรศัพท์ให้ครบถ้วน');
     }
   else {
     checkPhone = 1 ;
