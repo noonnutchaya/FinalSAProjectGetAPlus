@@ -135,13 +135,13 @@ class NavBarVendor extends React.Component {
                     </Menu.Item>
 
                     <Menu.Item >
-                            <a href= "http://localhost:3000/regisCustomer" rel="noopener noreferrer">
+                            <a href= "http://localhost:2000/regisCustomer" rel="noopener noreferrer">
                             <span> <Icon type="usergroup-add" /> <span> ลงทะเบียนลูกค้า </span> </span>
                             </a>
                     </Menu.Item>
 
                     <Menu.Item >
-                            <a href= "http://localhost:3000/reportOrderPage" rel="noopener noreferrer">
+                            <a href= "http://localhost:2000/reportOrderPage" rel="noopener noreferrer">
                             <span> <Icon type="snippets" /> <span> สถานะงาน </span> </span>
                             </a>
                     </Menu.Item>

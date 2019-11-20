@@ -14,6 +14,31 @@ class TableReportStatus extends Component {
         }
    }
 
+   compareValues(key, order='asc') {
+    return function(a, b) {
+      if(!a.hasOwnProperty(key) || 
+         !b.hasOwnProperty(key)) {
+          return 0; 
+      }
+      
+      const varA = (typeof a[key] === 'string') ? 
+        a[key].toUpperCase() : a[key];
+      const varB = (typeof b[key] === 'string') ? 
+        b[key].toUpperCase() : b[key];
+        
+      let comparison = 0;
+      if (varA > varB) {
+        comparison = 1;
+      } else if (varA < varB) {
+        comparison = -1;
+      }
+      return (
+        (order == 'desc') ? 
+        (comparison * -1) : comparison
+      );
+    };
+  }
+
    componentDidMount(){
         db.collection(dataCollectionName).where("emailUser", "==", this.props.email).onSnapshot(querySnapshot => {
             let userDataList = [];
@@ -38,6 +63,7 @@ class TableReportStatus extends Component {
                     workLink: doc.data().workLink
                 });
             });
+            userDataList.sort(this.compareValues("orderDate"))
             this.setState({ data: userDataList });
         })  
    }
@@ -70,6 +96,7 @@ class TableReportStatus extends Component {
             }
             userDataList.push(userData);
         });
+        userDataList.sort(this.compareValues("orderDate"))
         this.setState({ data: userDataList })
         });
     }
@@ -113,7 +140,7 @@ class TableReportStatus extends Component {
                                 {stateWork}
                             </button>
                             <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <a className="dropdown-item" onClick={this.selectState( 1, Id)} dataToggle="modal" dataTarget="#quotationForm"> Doing </a>
+                                <a className="dropdown-item" onClick={this.selectState( 1, Id)}> Doing </a>
                                 <a className="dropdown-item" onClick={this.selectState( 2, Id)}> Done </a>
                                 <a className="dropdown-item" onClick={this.selectState( 3, Id)}> Received </a>
                                 <a className="dropdown-item" onClick={this.selectState( 4, Id)}> abort </a>
@@ -189,12 +216,14 @@ class TableReportStatus extends Component {
                 <table id='students'>
                     {this.renderTableData()}
                 </table>
-                <div className="block-container">
-                    <h5> Filter </h5>
-                    <button className="btn btn-secondary grap" onClick={() => this.clkUpdate("Order")}>Order</button>
-                    <button className="btn btn-secondary grap" onClick={() =>this.clkUpdate("Doing")}>Doing</button>
-                    <button className="btn btn-secondary grap" onClick={() =>this.clkUpdate("Done")}>Done</button>
-                    <button className="btn btn-secondary grap" onClick={() =>this.clkUpdate("Received")}>Received</button>
+                <div className="center-container">
+                    <div className="block-container">
+                        <h5> Filter </h5>
+                        <button className="btn btn-secondary grap" onClick={() => this.clkUpdate("Order")}>Order</button>
+                        <button className="btn btn-secondary grap" onClick={() =>this.clkUpdate("Doing")}>Doing</button>
+                        <button className="btn btn-secondary grap" onClick={() =>this.clkUpdate("Done")}>Done</button>
+                        <button className="btn btn-secondary grap" onClick={() =>this.clkUpdate("Received")}>Received</button>
+                    </div>
                 </div>
             </div>
       )
