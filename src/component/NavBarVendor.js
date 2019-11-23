@@ -136,13 +136,36 @@ class NavBarVendor extends React.Component {
 
                     <Menu.Item >
                             <a href= "http://localhost:2000/regisCustomer" rel="noopener noreferrer">
-                            <span> <Icon type="usergroup-add" /> <span> ลงทะเบียนลูกค้า </span> </span>
+                            <span> <Icon type="usergroup-add" style={{ color: '#0D9470' }}/> <span> ลงทะเบียนลูกค้า </span> </span>
                             </a>
                     </Menu.Item>
 
                     <Menu.Item >
+                        <a href= "http://localhost:2000/ReportNewPage" >
+                        <span> <Icon type="file-add" style={{ color: '#0D9470' }}/> <span> งานใหม่ </span> </span>
+                        </a>
+                    </Menu.Item>
+
+                    <Menu.Item >
+                        <a href= "http://localhost:2000/WorkDoingPage" >
+                        <span> <Icon type="file-sync" style={{ color: '#0D9470' }} /> <span> งานที่ต้องทำ </span> </span>
+                        </a>
+                    </Menu.Item>
+
+                    <Menu.Item >
+                        <a href= "http://localhost:2000/WorkDonePage" >
+                        <span> <Icon type="file-done" style={{ color: '#0D9470' }} /> <span> งานที่เสร็จแล้ว </span> </span>
+                        </a>
+                    </Menu.Item>
+
+                    <Menu.Item >
                             <a href= "http://localhost:2000/reportOrderPage" rel="noopener noreferrer">
-                            <span> <Icon type="snippets" /> <span> สถานะงาน </span> </span>
+                            <span> <Icon type="snippets" style={{ color: '#0D9470' }}/> <span> รายชื่อลูกค้า </span> </span>
+                            </a>
+                    </Menu.Item>
+                    <Menu.Item >
+                            <a href= "" rel="noopener noreferrer">
+                            <span> <Icon type="snippets" style={{ color: '#0D9470' }}/> <span> รายงาน </span> </span>
                             </a>
                     </Menu.Item>
 
@@ -150,11 +173,11 @@ class NavBarVendor extends React.Component {
                             title={
                             <span className="submenu-title-wrapper">
                             <Icon type="setting" />   </span>} >
-{/* 
-                        <Menu.Item 
-                            key="1"     onClick={(e)=>this.setState({current: e.key})}>
-                            <span> <Icon type="key" />แก้ไขรหัสผ่าน  </span>
-                        </Menu.Item> */}
+
+                         {/* <Menu.Item 
+                             key="1"     onClick={(e)=>this.setState({current: e.key})}>
+                             <span> <Icon type="key" />แก้ไขรหัสผ่าน  </span>
+                         </Menu.Item>  */}
 
                         <Menu.Item 
                             key="2"     onClick={this.logout}>      <span> <Icon type="logout" />ลงชื่อออก</span>

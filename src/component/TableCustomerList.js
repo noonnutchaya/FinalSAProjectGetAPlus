@@ -59,7 +59,7 @@ class TableCustomerList extends Component {
             <th> ชื่อ </th>
             <th> Email </th>
             <th> เบอร์โทรศัพท์ </th>
-            <th> รายการสั่งงาน </th>
+            {/* <th> รายการสั่งงาน </th> */}
         </tr>
     }
 
@@ -71,7 +71,7 @@ class TableCustomerList extends Component {
                     <td>{name}</td>
                     <td>{email}</td>
                     <td>{phoneNumber}</td>
-                    <td>
+                    {/* <td>
                         <Link
                             to={{
                                 pathname: "/showOrder",
@@ -80,7 +80,7 @@ class TableCustomerList extends Component {
                         >
                             <button className="btn btn-secondary">Show</button>
                         </Link>
-                    </td>
+                    </td> */}
                 </tr>
             )
         })

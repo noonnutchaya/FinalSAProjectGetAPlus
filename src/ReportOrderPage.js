@@ -44,27 +44,11 @@ class ReportOrderPage extends React.Component {
   }
 
   render() {
-    // firebase.auth().onAuthStateChanged(user =>{
-    //   if(!user){
-    //     return( <Link to="/reportOrderPage"/> );
-    //   }else{
-    //     return (
-    //       <div>
-    //         <NavBarVendor/>
-    //         <div className="container">
-    //           <h1>Customer List Table</h1>
-    //           <TableCustomerList/>
-    //         </div>
-    //       </div>
-    //     );
-    //   }
-    // });
     return (
       <div>
         <NavBarVendor/>
         <div className="layout">
           <h1 className="title"> รายชื่อลูกค้า </h1>
-          <p> คำแนะนำ : ปุ่ม "show" ด้านหลังแถวสามารถแสดงตารางการสั่งงานต่างๆของลูค้ารายนั้นได้ และสามารถใช้ตารางนี้ในการปรับแก้สถานะงาน </p>
           <TableCustomerList/>
         </div>
       </div>

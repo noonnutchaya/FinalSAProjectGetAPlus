@@ -143,7 +143,7 @@ class TableReportStatus extends Component {
                                 <a className="dropdown-item" onClick={this.selectState( 1, Id)}> Doing </a>
                                 <a className="dropdown-item" onClick={this.selectState( 2, Id)}> Done </a>
                                 <a className="dropdown-item" onClick={this.selectState( 3, Id)}> Received </a>
-                                <a className="dropdown-item" onClick={this.selectState( 4, Id)}> abort </a>
+                                <a className="dropdown-item" onClick={this.selectState( 4, Id)}> Abort </a>
                             </div>
                         </div>
                     </td>
@@ -197,11 +197,15 @@ class TableReportStatus extends Component {
                     )
                     break;
                 case 4:
-                    collection.doc(idOrder).delete().then(function() {
-                        alert("Delete this order complete.");
-                    }).catch(function(error){
-                        console.log("Delete incomplete!");
-                    })
+/*uncomment when want to hard delete order when change stateWork to "Abort" */
+                    // collection.doc(idOrder).delete().then(function() {
+                    //     alert("Delete this order complete.");
+                    // }).catch(function(error){
+                    //     console.log("Delete incomplete!");
+                    // })
+                    collection.doc(idOrder).update(
+                        {stateWork: "Abort"}
+                    )
                     break;
                 
                 default:

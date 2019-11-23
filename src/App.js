@@ -7,6 +7,9 @@ import ReportOrderPage from './ReportOrderPage';
 import RegistrationForm from './RegistrationForm';
 import ShowOrderListPage from './ShowOrderListPage';
 import ShowWelcomeVendorPage from './ShowWelcomeVendorPage';
+import ReportNewPage from './ReportNewPage';
+import WorkDoingPage from './WorkDoingPage';
+import WorkDonePage from './WorkDonePage';
 
 function App() {
   return (
@@ -17,8 +20,11 @@ function App() {
           <Route path="/reportOrderPage" component = {ReportOrderPage} />
           <Route path="/regisCustomer" component ={RegistrationForm}/>
           <Route path="/showOrder" component ={ShowOrderListPage}/>
+          <Route path="/ReportNewPage" component ={ReportNewPage}/>
+          <Route path="/WorkDoingPage" component ={WorkDoingPage}/>
+          <Route path="/WorkDonePage" component ={WorkDonePage}/>
         </Switch>
-       </Router>
+      </Router>
 
 
   );
